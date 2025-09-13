@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: quiz_db
+    environment:
+      POSTGRES_DB: quiz_db
+      POSTGRES_USER: quiz_user
+      POSTGRES_PASSWORD: quiz_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quiz_user -d quiz_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  web:
+    build:
+      context: ./quiz
+      dockerfile: Dockerfile
+    container_name: quiz_web
+    env_file:
+      - ./quiz/.env
+    environment:
+      POSTGRES_HOST: db
+      # для prod можно выставить: DJANGO_DEBUG=0
+    depends_on:
+      db:
+        condition: service_healthy
+    # порт наружу больше не публикуем — ходим через nginx
+    volumes:
+      - ./quiz:/app
+      - staticfiles:/app/staticfiles   # STATIC_ROOT
+      - mediafiles:/app/media          # если заведёшь MEDIA_ROOT
+    expose:
+      - "8000"   # доступен только внутри сети compose
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: quiz_nginx
+    depends_on:
+      - web
+    ports:
+      - "8000:80"               # теперь фронт доступен тут
+    volumes:
+      - staticfiles:/static     # смонтируем STATIC_ROOT как /static
+      - mediafiles:/media       # если будут медиа
+
+volumes:
+  pgdata:
+  staticfiles:
+  mediafiles:
+

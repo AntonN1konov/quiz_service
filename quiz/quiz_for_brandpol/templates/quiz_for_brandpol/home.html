@@ -1,0 +1,27 @@
+{% extends "quiz_for_brandpol/base.html" %}
+
+{% block title %}Доступные тесты{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">Доступные тесты</h1>
+
+  {% if tests %}
+    <div class="row">
+      {% for t in tests %}
+        <div class="col-md-4">
+          <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ t.title }}</h5>
+              <p class="card-text text-muted">{{ t.description|default:"Описание отсутствует" }}</p>
+              <form method="get" action="{% url 'qfb_start' test_id=t.id %}">
+                <button type="submit" class="btn btn-primary w-100">Пройти</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">Пока нет активных тестов.</div>
+  {% endif %}
+{% endblock %}

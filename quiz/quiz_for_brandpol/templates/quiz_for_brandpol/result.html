@@ -1,0 +1,35 @@
+{% extends "quiz_for_brandpol/base.html" %}
+
+{% block title %}Результат{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-3">Результаты: {{ attempt.test.title }}</h1>
+        <div class="row text-center mb-3">
+          <div class="col">
+            <div class="fw-bold fs-4">{{ attempt.correct_count }}</div>
+            <div class="text-muted">Правильных</div>
+          </div>
+          <div class="col">
+            <div class="fw-bold fs-4">{{ attempt.wrong_count }}</div>
+            <div class="text-muted">Неправильных/пропусков</div>
+          </div>
+          <div class="col">
+            <div class="fw-bold fs-4">{{ attempt.percent }}%</div>
+            <div class="text-muted">Процент</div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <a href="{% url 'qfb_start' test_id=attempt.test.id %}" class="btn btn-primary">Пройти заново</a>
+          <a href="{% url 'home' %}" class="btn btn-outline-secondary">К списку тестов</a>
+          <a href="{% url 'qfb_history' %}" class="btn btn-outline-info">История</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

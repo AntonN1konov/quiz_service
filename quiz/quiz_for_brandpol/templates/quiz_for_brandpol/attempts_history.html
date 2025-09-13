@@ -1,0 +1,41 @@
+{% extends "quiz_for_brandpol/base.html" %}
+
+{% block title %}История прохождений{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">История прохождений</h1>
+
+  {% if attempts %}
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Тест</th>
+          <th>Начат</th>
+          <th>Завершён</th>
+          <th>Правильных</th>
+          <th>Неправильных</th>
+          <th>%</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in attempts %}
+          <tr>
+            <td>{{ a.test.title }}</td>
+            <td>{{ a.started_at|date:"Y-m-d H:i" }}</td>
+            <td>{% if a.completed_at %}{{ a.completed_at|date:"Y-m-d H:i" }}{% else %}—{% endif %}</td>
+            <td>{{ a.correct_count }}</td>
+            <td>{{ a.wrong_count }}</td>
+            <td>{{ a.percent }}%</td>
+            <td>
+              <a href="{% url 'qfb_result' attempt_id=a.id %}" class="btn btn-sm btn-outline-info">Результат</a>
+              <a href="{% url 'qfb_start' test_id=a.test.id %}" class="btn btn-sm btn-outline-primary">Пройти заново</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info">Пока нет попыток.</div>
+  {% endif %}
+{% endblock %}
