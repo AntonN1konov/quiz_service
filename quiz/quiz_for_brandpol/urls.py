@@ -13,7 +13,6 @@ urlpatterns = [
 
     path("register/", views.register, name="register"),
 
-    # стандартные auth views
     path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("tests/<int:test_id>/start/", views.start_test, name="qfb_start"),
