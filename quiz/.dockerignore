@@ -7,5 +7,4 @@ venv/
 .env
 .git
 .gitignore
-*.sqlite3
 staticfiles/
