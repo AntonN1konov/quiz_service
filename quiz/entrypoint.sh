@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# Ожидание доступности БД
 echo "Waiting for DB ${POSTGRES_HOST}:${POSTGRES_PORT}..."
 python - <<'PY'
 import os, time, socket
@@ -17,14 +16,12 @@ else:
 print("DB is up")
 PY
 
-# Миграции
 python manage.py migrate --noinput
 
-# Создать суперпользователя admin/password, если нет
 python - <<'PY'
 import os
 from django.core.management import execute_from_command_line
-os.environ.setdefault("DJANGO_SETTINGS_MODULE","quiz.settings")  # поменяй, если у тебя другой модуль настроек
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","quiz.settings")
 import django; django.setup()
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -37,8 +34,6 @@ else:
     print("Admin already exists")
 PY
 
-# Сбор статики (если нужно)
 python manage.py collectstatic --noinput || true
 
-# Запуск сервера (Gunicorn для prod; для dev можно заменить на runserver)
 exec gunicorn quiz.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60
