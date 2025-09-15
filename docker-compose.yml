@@ -24,17 +24,17 @@ services:
       - ./quiz/.env
     environment:
       POSTGRES_HOST: db
-      # для prod можно выставить: DJANGO_DEBUG=0
+      
     depends_on:
       db:
         condition: service_healthy
-    # порт наружу больше не публикуем — ходим через nginx
+    
     volumes:
       - ./quiz:/app
-      - staticfiles:/app/staticfiles   # STATIC_ROOT
-      - mediafiles:/app/media          # если заведёшь MEDIA_ROOT
+      - staticfiles:/app/staticfiles   
+      - mediafiles:/app/media          
     expose:
-      - "8000"   # доступен только внутри сети compose
+      - "8000"   
 
   nginx:
     build:
@@ -43,10 +43,10 @@ services:
     depends_on:
       - web
     ports:
-      - "8000:80"               # теперь фронт доступен тут
+      - "8000:80"               
     volumes:
-      - staticfiles:/static     # смонтируем STATIC_ROOT как /static
-      - mediafiles:/media       # если будут медиа
+      - staticfiles:/static     
+      - mediafiles:/media       
 
 volumes:
   pgdata:
