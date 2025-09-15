@@ -16,7 +16,7 @@ class AnswerInlineFormSet(BaseInlineFormSet):
         if total > 0 and correct == 0:
             raise ValidationError("Хотя бы один правильный ответ обязателен.")
         if total > 0 and correct == total:
-            raise ValidationError("Не все варианты могут быть правильными.")
+            raise ValidationError("Все варианты не могут быть правильными.")
 
 class AnswerInline(admin.TabularInline):
     model = Answer
