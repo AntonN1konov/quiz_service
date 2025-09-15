@@ -24,7 +24,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("/")  # после регистрации сразу на главную
+            return redirect("/") 
     else:
         form = UserCreationForm()
     return render(request, "registration/register.html", {"form": form})
@@ -35,7 +35,7 @@ class AttemptHistoryView(ListView):
     model = Attempt
     template_name = "quiz_for_brandpol/attempts_history.html"
     context_object_name = "attempts"
-    paginate_by = 20  # опционально
+    paginate_by = 20  
 
     def get_queryset(self):
         return (Attempt.objects
@@ -60,7 +60,7 @@ class StartTestView(View):
         first_q = test.questions.filter(is_active=True).order_by("order","id").first()
         return redirect("qfb_question", attempt_id=attempt.id, question_id=first_q.id)
 
-    # чтобы было удобно тестировать — разрешим старт и GET-ом
+   
     def get(self, request, test_id):
         return self.post(request, test_id)
 
