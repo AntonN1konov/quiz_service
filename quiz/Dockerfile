@@ -14,7 +14,7 @@ RUN pip install -r requirements.txt
 
 COPY . /app/
 
-# ВАЖНО: на Windows сохраните entrypoint.sh с LF, не CRLF
+
 RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
