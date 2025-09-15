@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("quiz_for_brandpol.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),  # логин/логаут/смена пароля
+    path("accounts/", include("django.contrib.auth.urls")),  
 ]
 
 if settings.DEBUG:
